@@ -1,0 +1,38 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Interfaz gráfica",
+            "request": "launch",
+            "mainClass": "Interfaz",
+            "vmArgs": "-Dfile.encoding=UTF-8"
+        },
+        {
+            "type": "java",
+            "name": "Menú",
+            "request": "launch",
+            "mainClass": "Main",
+            "console": "integratedTerminal",
+            "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstdin.encoding=UTF-8"
+        },
+        {
+            "type": "java",
+            "name": "Corrida fija (verificación)",
+            "request": "launch",
+            "mainClass": "Main",
+            "args": "fija",
+            "console": "integratedTerminal",
+            "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8"
+        },
+        {
+            "type": "java",
+            "name": "Modo libre",
+            "request": "launch",
+            "mainClass": "Main",
+            "args": "libre",
+            "console": "integratedTerminal",
+            "vmArgs": "-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8"
+        }
+    ]
+}

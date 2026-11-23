@@ -1,0 +1,126 @@
+
+##### 1. LA SALA: Dijkstra hasta la mesa, Prim y Kruskal para conectar #####
+Sala, T1 libre:
+  T1 (libre) queda a 4 min: R → T1
+  T2 (libre) queda a 6 min: R → T2
+  T3 (libre) queda a 9 min: R → T1 → T3
+  T4 (libre) queda a 9 min: R → T2 → T4
+Dijkstra: la mesa libre más cercana es T1, R → T1, 4 min
+
+Prim desde R, costo 10:
+  acepta: R—T1 (4), T1—T2 (2), T2—T4 (3), T4—T3 (1)
+  no usa: R—T2 (6), T1—T3 (5), T2—T3 (8)
+Kruskal, costo 10:
+  acepta: T3—T4 (1), T1—T2 (2), T2—T4 (3), R—T1 (4)
+  rechaza (cerrarían un ciclo): T1—T3 (5), R—T2 (6), T2—T3 (8)
+
+T1 llena:
+  T1 (llena) queda a 4 min: R → T1
+  T2 (libre) queda a 6 min: R → T2
+  T3 (libre) queda a 9 min: R → T1 → T3
+  T4 (libre) queda a 9 min: R → T2 → T4
+Dijkstra: la mesa libre más cercana es T2, R → T2, 6 min
+
+Para la partida, T1 vuelve a quedar libre y ahí se sientan.
+
+##### 2. LA MESA: asientos (lista doble) y tabla hash #####
+Asientos (derecha, orden del reparto): Ana ↔ Luis ↔ Marta
+Al revés (izquierda):                  Marta ↔ Luis ↔ Ana
+Tabla hash (cubeta = suma de códigos del id, módulo 5):
+  cubeta 0: (vacía)
+  cubeta 1: J01 Ana (suma 171) → J06 Marta (suma 176)
+  cubeta 2: J02 Luis (suma 172)
+  cubeta 3: (vacía)
+  cubeta 4: (vacía)
+Buscar J01: suma 171 → cubeta 1
+  recorre J01 Ana: encontrado
+Buscar J06: suma 176 → cubeta 1
+  recorre J01 Ana: no es
+  recorre J06 Marta: encontrado
+Buscar J02: suma 172 → cubeta 2
+  recorre J02 Luis: encontrado
+
+##### 3. ÁRBOL DE DECISIÓN #####
+  ¿La mano pasa de 21?
+     sí → pasarse (pierde la apuesta)
+     no → ¿Son dos cartas y suman 21?
+        sí → blackjack (cobra 3 a 2, o empata si el crupier también lo tiene)
+        no → ¿Le toca decidir al jugador?
+           sí → ¿Pide carta?
+              sí → pedir carta
+              no → plantarse
+           no → ¿El crupier tiene menos de 17?
+              sí → el crupier pide carta
+              no → el crupier se planta y se comparan los puntajes
+
+##### 4. LAS DOS RONDAS #####
+
+=== Ronda 1 ===
+Apuestan: Ana 100, Luis 50. No apuesta: Marta.
+Orden de reparto y de turnos: Ana, Luis y el crupier.
+  Ana recibe: As de picas y Rey de tréboles = 21
+  Luis recibe: 9 de corazones y 7 de picas = 16
+  Crupier muestra: Rey de diamantes (la segunda carta queda oculta)
+  El crupier muestra Rey de diamantes: mira su carta oculta.
+  El crupier no tiene blackjack.
+  Turno de Ana: As de picas y Rey de tréboles = 21
+    [árbol] ¿La mano pasa de 21? no → ¿Son dos cartas y suman 21? sí ⇒ blackjack (cobra 3 a 2, o empata si el crupier también lo tiene)
+    Ana: As de picas y Rey de tréboles. Blackjack. Cobra 3 a 2: +150. Fichas 650
+  Turno de Luis: 9 de corazones y 7 de picas = 16
+    [árbol] ¿La mano pasa de 21? no → ¿Son dos cartas y suman 21? no → ¿Le toca decidir al jugador? sí → ¿Pide carta? sí ⇒ pedir carta
+    Luis pide: 8 de diamantes → 24
+    [árbol] ¿La mano pasa de 21? sí ⇒ pasarse (pierde la apuesta)
+    Luis: 9 de corazones, 7 de picas y 8 de diamantes. 24. Se pasa y pierde 50. Fichas 350
+  Turno del crupier. Revela: Rey de diamantes y 6 de corazones = 16
+    [árbol] ¿La mano pasa de 21? no → ¿Son dos cartas y suman 21? no → ¿Le toca decidir al jugador? no → ¿El crupier tiene menos de 17? sí ⇒ el crupier pide carta
+    El crupier pide: 5 de tréboles → 21
+    [árbol] ¿La mano pasa de 21? no → ¿Son dos cartas y suman 21? no → ¿Le toca decidir al jugador? no → ¿El crupier tiene menos de 17? no ⇒ el crupier se planta y se comparan los puntajes
+    El crupier: Rey de diamantes, 6 de corazones y 5 de tréboles. 21. Se planta.
+  Fichas: Ana 650, Luis 350, Marta 300
+
+Mano de Luis: 9 de corazones, 7 de picas, 8 de diamantes
+Mano de Luis al revés: 8 de diamantes, 7 de picas, 9 de corazones
+
+=== Ronda 2 ===
+Apuestan: Marta 80, Ana 100. No apuesta: Luis.
+Orden de reparto y de turnos: Marta, Ana y el crupier.
+  Marta recibe: 10 de picas y 7 de diamantes = 17
+  Ana recibe: 8 de tréboles y 5 de corazones = 13
+  Crupier muestra: 9 de picas (la segunda carta queda oculta)
+  Turno de Marta: 10 de picas y 7 de diamantes = 17
+    [árbol] ¿La mano pasa de 21? no → ¿Son dos cartas y suman 21? no → ¿Le toca decidir al jugador? sí → ¿Pide carta? no ⇒ plantarse
+    Marta: 10 de picas y 7 de diamantes. 17. Se planta.
+  Turno de Ana: 8 de tréboles y 5 de corazones = 13
+    [árbol] ¿La mano pasa de 21? no → ¿Son dos cartas y suman 21? no → ¿Le toca decidir al jugador? sí → ¿Pide carta? sí ⇒ pedir carta
+    Ana pide: 3 de picas → 16
+    [árbol] ¿La mano pasa de 21? no → ¿Son dos cartas y suman 21? no → ¿Le toca decidir al jugador? sí → ¿Pide carta? no ⇒ plantarse
+    Ana: 8 de tréboles, 5 de corazones y 3 de picas. 16. Se planta.
+  Turno del crupier. Revela: 9 de picas y 8 de corazones = 17
+    [árbol] ¿La mano pasa de 21? no → ¿Son dos cartas y suman 21? no → ¿Le toca decidir al jugador? no → ¿El crupier tiene menos de 17? no ⇒ el crupier se planta y se comparan los puntajes
+    El crupier: 9 de picas y 8 de corazones. 17. Se planta.
+  Marta con 17 contra 17: Empata y recupera la apuesta. Fichas 300
+  Ana con 16 contra 17: Pierde 100. Fichas 550
+  Fichas: Ana 550, Luis 350, Marta 300
+
+##### 5. DESCARTE E HISTORIAL #####
+Descarte: 15 cartas. Cima: 3 de picas
+Historial: 9 acciones. Cima: El crupier se planta en 17
+Al retirarla (El crupier se planta en 17), la cima queda en: Ana se planta en 16
+
+##### 6. RANKING (árbol binario de búsqueda) #####
+Se insertan las fichas finales en este orden: Marta, Ana, Luis.
+  300 Marta
+  └─ der: 550 Ana
+     └─ izq: 350 Luis
+  Inorden: 300, 350, 550
+  Nodos: 3  Peso: 2  Altura: 2  Hojas: 1  Completo: no
+  Buscar 350: camino 300 → 550 → 350, nivel 2, grado 0
+
+##### 7. CASOS DE BORDE #####
+Buscar J99: suma 188 → cubeta 3
+  AVISO: el jugador J99 no existe en la tabla.
+AVISO: la mesa T9 no está en la sala; no hay camino.
+Se retiran 37 cartas del zapato para la prueba. Zapato vacío.
+Luis pide carta:
+    AVISO: el zapato está vacío; no se reparte ninguna carta.
+    (no se inventó ninguna carta; la mano de Luis sigue en 3 cartas)
