@@ -1,6 +1,6 @@
 # Parcial de Estructuras de Datos — Sala de blackjack
 
-**Integrantes:** _(escribir nombres)_
+**Integrantes:** _(Faber Andres Garzon Gomez)_
 **Fecha:** 23 de noviembre de 2026
 
 ---
