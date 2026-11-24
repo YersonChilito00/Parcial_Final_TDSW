@@ -1,6 +1,7 @@
 # Sala de blackjack — Parcial de Estructuras de Datos
 
-Programa de consola en Java (sin paquetes, sin librerías externas).
+Programa de consola en Java (sin paquetes,sin librerías externas).
+AUTORES;YERSON CHILITO MOLINA,FABER ANDRES 
 
 ## Abrir y correr en Visual Studio Code
 
